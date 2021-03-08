@@ -7,4 +7,4 @@
 // })();
 
 // test that i can run a funloader.js function with
-funloader();
+funLoader();

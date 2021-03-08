@@ -4,7 +4,7 @@
 // utorid/markus: gaowilso
 // ----------------------------------------------------------------
 
-function funloader(){
+function funLoader(){
     // code for loading screen
 
     // test that it's loaded in correctly, logs the current date.
@@ -17,4 +17,7 @@ function funloader(){
     // code
 }
 
-// needs a 
+// puts in a default loading bar
+function basicLoadingBar(){
+    console.log("starting basic loading bar")
+}
