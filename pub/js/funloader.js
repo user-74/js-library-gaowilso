@@ -39,7 +39,6 @@ function defaultProgressBar() {
 
     // add this progress bar to the JS array
     activeProgressBars.push(progressBarObject)
-    log(activeProgressBars)
 
     return progressBar
 }
@@ -69,7 +68,6 @@ async function addProgress(progressBar, amount) {
             }),
             1
         )
-        log(activeProgressBars)
     }
 }
 
