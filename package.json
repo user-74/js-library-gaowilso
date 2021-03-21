@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4",
-    "serve-favicon": "^2.5.0"
+    "express": "^4.16.4"
   }
 }
