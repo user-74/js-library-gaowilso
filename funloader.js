@@ -11,7 +11,6 @@ const timer = (ms) => new Promise((res) => setTimeout(res, ms))
 // JS Object, array of all active loading bars
 const activeProgressBars = []
 
-
 // Basic Loading Bar Functionality:
 
 // Creates the default loading bar
@@ -33,7 +32,7 @@ function defaultProgressBar() {
     progress.percentage = percentage
 
     // contains dom references to the progress bar and progress itself
-    activeProgressBars.push( {
+    activeProgressBars.push({
         HTMLreference: progressBar,
         percentage: 0,
         draggable: false,
@@ -50,7 +49,7 @@ async function addProgress(progressBar, amount) {
     let bar
 
     for (bar of activeProgressBars) {
-        if (bar.HTMLreference == progressBar){
+        if (bar.HTMLreference == progressBar) {
             bar.percentage += amount
             break
         }
@@ -61,6 +60,7 @@ async function addProgress(progressBar, amount) {
 
     // increment the loading bar by the specified amount
     progress.percentage = bar.percentage
+    if (progress.percentage > 100) progress.percentage = 100
     progress.innerText = Math.round(progress.percentage * 100) / 100 + '%'
     progress.style.width = progress.percentage + '%'
 
@@ -84,7 +84,7 @@ async function addProgress(progressBar, amount) {
 function makeDraggable(progressBar) {
     // update draggable property
     for (const bar of activeProgressBars) {
-        if (bar.HTMLreference == progressBar){
+        if (bar.HTMLreference == progressBar) {
             bar.draggable = true
             break
         }
