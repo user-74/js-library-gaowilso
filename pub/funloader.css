@@ -14,12 +14,19 @@
     width: 0px;
     background-color: #00adb981;
     box-shadow: 0px 2px 2px -5px #00adb981, 0px 2px 5px #00adb981;
-    background: linear-gradient(to left, #00adb981, #00eeffec);
+    background-image: linear-gradient(to left, #00adb981, #00eeffec);
     display: flex;
+    float:left;
     align-items: center;
     justify-content: center;
     border-radius: 20px;
     transition: 1s ease 0.3s;
+}
+
+.outerPercentage {
+    float: left;
+    line-height: 30px;
+    margin-left: 2px;
 }
 
 .fadeOut {

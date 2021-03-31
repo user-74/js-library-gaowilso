@@ -29,10 +29,13 @@ async function generateImages() {
     placement.appendChild(progressBar)
 
     // makes the loading bar draggable
-    if (draggable) makeDraggable(progressBar)
-    else {
+    if (draggable) {
+        makeDraggable(progressBar)
+        hidePercent(progressBar)
+    } else {
         progressBar.style.margin = 'auto'
         progressBar.style.marginTop = '10px'
+        setProgressGradient(progressBar, '#FFFFFF', '#FFFFFF')
     }
 
     // generate images with a second delay between images, to randomize images

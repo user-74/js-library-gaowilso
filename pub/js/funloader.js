@@ -19,63 +19,122 @@ function defaultProgressBar() {
     const progress = document.createElement('div')
     const progressBar = document.createElement('div')
 
-    // set properties of the loading bar and
-    progressBar.className = 'progress-bar'
-    progressBar.style.textAlign = 'center'
-    progressBar.style.alignItems = 'center'
-    progressBar.style.justifyContent = 'center'
-    progress.className = 'progress'
-    progressBar.appendChild(progress)
+    // displays percentage outside the progress bar if it is too small (< 25%)
+    const outerPercentage = document.createElement('div')
 
-    // loading bar starts at 0%
-    let percentage = 0
-    progress.percentage = percentage
+    // set classes
+    progressBar.className = 'progress-bar'
+    progress.className = 'progress'
+    outerPercentage.className = 'outerPercentage'
+    
+    progressBar.appendChild(progress)
+    progressBar.appendChild(outerPercentage)
 
     // contains dom references to the progress bar and progress itself
     activeProgressBars.push({
         HTMLreference: progressBar,
         percentage: 0,
         draggable: false,
+        hidePercent: false,
     })
-
-    // add this progress bar to the JS array
-    log(activeProgressBars)
 
     return progressBar
 }
 
-async function addProgress(progressBar, amount) {
-    // get the element's properties from the list
-    let bar
+// gets the progress bar element from the array of progress bars
+function getProgressBar(progressBar) {
+    return activeProgressBars.filter((object) => {
+        return object.HTMLreference === progressBar
+    })[0]
+}
 
-    for (bar of activeProgressBars) {
-        if (bar.HTMLreference == progressBar) {
-            bar.percentage += amount
-            break
+// adds amount to the percentage of the progress bar
+function addProgress(progressBar, amount) {
+    // retrieve the progress bar's information from the stored array
+    const bar = getProgressBar(progressBar)
+    const prevPercent = bar.percentage
+    // update the percentage this bar has
+    bar.percentage += amount
+    // access the progress of the progress bar
+    const progress = progressBar.firstElementChild
+    const outerPercentage = progressBar.lastElementChild
+
+
+    // increase progress by the specified amount
+    let percent = Math.round(bar.percentage * 100) / 100
+    // if we have over 100%, round it to 100%
+    if (percent >= 100) percent = 100
+    progress.style.width = percent + '%'
+
+    if (!bar.hidePercent) {
+        if (bar.percentage > 25){
+            progress.innerText = percent + '%'
+        } else{
+            outerPercentage.innerText = percent + '%'
+        }
+        if (prevPercent < 25 && bar.percentage > 25) {
+            outerPercentage.innerText = ''
         }
     }
 
-    // access the progress of the loading bar
+    // If we display 100%, loading has finished
+    if (percent === 100) {
+        finishBar(progressBar)
+    }
+}
+
+// function for animating the bar fading out after finished loading and deletes it
+async function finishBar(progressBar) {
+    const bar = getProgressBar(progressBar)
     const progress = progressBar.firstElementChild
 
-    // increment the loading bar by the specified amount
-    progress.percentage = bar.percentage
-    if (progress.percentage > 100) progress.percentage = 100
-    progress.innerText = Math.round(progress.percentage * 100) / 100 + '%'
-    progress.style.width = progress.percentage + '%'
-
-    // If we display 100%, loading has finished
-    if (progress.innerText === '100%') {
-        // Some css to make the loading bar appear to fade out after a while
-        await timer(1000)
-        progressBar.classList.add('fadeOut')
-        await timer(2000)
-
-        // remove the loading bar from the HTML DOM
-        delete activeProgressBars.splice(activeProgressBars.indexOf(bar), 1)
-        progressBar.remove()
-        log(activeProgressBars)
+    // complete the bar
+    if (!bar.hidePercent) {
+        progress.innerText = '100%'
     }
+    progress.style.width = '100%'
+
+    // Some css to make the loading bar appear to fade out after a while
+    await timer(1000)
+    progressBar.classList.add('fadeOut')
+    await timer(2000)
+
+    // remove the loading bar from the HTML DOM
+    delete activeProgressBars.splice(activeProgressBars.indexOf(bar), 1)
+    progressBar.remove()
+}
+
+// function if loading is cancelled
+function cancelBar(progressBar) {
+    const bar = getProgressBar(progressBar)
+    delete activeProgressBars.splice(activeProgressBars.indexOf(bar), 1)
+    progressBar.remove()
+}
+
+// Customization
+
+// do not show percentage inside progress bar
+function hidePercent(progressBar) {
+    const bar = getProgressBar(progressBar)
+    bar.hidePercent = true
+}
+
+// show percentage inside progress bar
+function unhidePercent(progressBar) {
+    const bar = getProgressBar(progressBar)
+    bar.hidePercent = false
+}
+
+// customize the gradient colors of the progress bar
+function setProgressGradient(progressBar, leftColor, rightColor) {
+    // retrieve the progress bar's information from the stored array
+    const progress = progressBar.firstElementChild
+    progress.style.backgroundImage =
+        'linear-gradient(to right,' + leftColor + ',' + rightColor + ')'
+    progress.style.boxShadow =
+        '0px 2px 2px -5px' + leftColor + ', 0px 2px 5px' + rightColor
+
+    console.log(progress)
 }
 
 // Interactivity:
