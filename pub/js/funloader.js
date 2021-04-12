@@ -288,7 +288,7 @@ class ProgressBar {
         this.HTMLreference.style.position = 'absolute'
 
         // Add a listener for mouse clicks
-        this.HTMLreference.addEventListener('mousedown', mouseDownHandler)
+        this.HTMLreference.addEventListener('mousedown', mouseDownDragHandler)
     }
 }
 
@@ -298,7 +298,7 @@ let mouseY = 0
 let active = null
 
 // Handle mouse events
-function mouseDownHandler(e) {
+function mouseDownDragHandler(e) {
     // record current mouse position
     mouseX = e.clientX
     mouseY = e.clientY
@@ -310,11 +310,11 @@ function mouseDownHandler(e) {
     if (active.className !== 'progress-bar') active = active.parentElement
 
     // mouse listeners
-    document.addEventListener('mousemove', mouseMoveHandler)
-    document.addEventListener('mouseup', mouseUpHandler)
+    document.addEventListener('mousemove', mouseMoveDragHandler)
+    document.addEventListener('mouseup', mouseUpDragHandler)
 }
 
-function mouseMoveHandler(e) {
+function mouseMoveDragHandler(e) {
     // how far the mouse has been moved
     const dx = e.clientX - mouseX
     const dy = e.clientY - mouseY
@@ -328,11 +328,11 @@ function mouseMoveHandler(e) {
     mouseY = e.clientY
 }
 
-function mouseUpHandler() {
+function mouseUpDragHandler() {
     // Set active element to null
     active = null
 
-    // Remove the handlers of `mousemove` and `mouseup` when the user lets go
-    document.removeEventListener('mousemove', mouseMoveHandler)
-    document.removeEventListener('mouseup', mouseUpHandler)
+    // Remove the DragHandlers of `mousemove` and `mouseup` when the user lets go
+    document.removeEventListener('mousemove', mouseMoveDragHandler)
+    document.removeEventListener('mouseup', mouseUpDragHandler)
 }
