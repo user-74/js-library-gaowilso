@@ -1,0 +1,43 @@
+<!-- funloader.js examples -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>example usage of funloader.js</title>
+    <link rel="stylesheet" href="example.css" />
+    <link rel="stylesheet" href="funloader.css" />
+    <script
+      type="text/javascript"
+      type="module"
+      src="./js/funloader.js"
+    ></script>
+    <script
+      type="text/javascript"
+      type="module"
+      src="./js/examples.js"
+    ></script>
+  </head>
+
+  <body>
+    <h1>Random Image Generator using funloader.js</h1>
+
+    <div style="text-align: center">
+      Input number of images:
+      <input class="textboxImages" type="text" />
+      <input
+        class="loadingButton"
+        type="button"
+        value="Generate random images"
+        onclick="generateImages();"
+      />
+      <input id="enableDrag" type="checkbox" defaultchecked /> Make Loading Bar
+      Draggable
+      <input type="button" value="toggle all percentages" onclick="toggleAll();"/>
+    </div>
+
+    <div class="loading-box"></div>
+
+    <div class="image-box"></div>
+  </body>
+</html>

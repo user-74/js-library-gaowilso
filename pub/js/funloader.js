@@ -58,10 +58,6 @@
     class ProgressBar {
         /**
          * Create a progress bar
-         * @example <caption>Default</caption>
-         *  <input type="button" value="Test" onclick="testFunc()" />
-         *
-         *
          * @param {...Progress} options - The {@link Progress} options for the progress bar
          */
         constructor(options = {}) {
@@ -110,10 +106,12 @@
             this.setOpacity(this.opacity)
             this.setProgressGradient(this.gradient)
             if (this.image) this.setBackgroundImage(this.image)
+            if (this.draggable) this.makeDraggable()
         }
 
         /**
          * Advances the progress bar by amount%.
+         * Should be invoked whenever progress has been made while loading an element
          * @param {number} amount - The percentage to add to the progress bar
          */
         addProgress(amount) {
@@ -280,8 +278,8 @@
         setFontColor(fontColor) {
             if (typeof fontColor === 'string') {
                 this.fontColor = fontColor
-                this.HTMLprogress.style.fontColor = fontColor
-                this.HTMLouterPercentage.style.fontColor = fontColor
+                this.HTMLprogress.style.color = fontColor
+                this.HTMLouterPercentage.style.color = fontColor
             } else {
                 throw new Error('Invalid fontColor supplied to progress bar')
             }
@@ -372,7 +370,8 @@
         }
 
         /**
-         * Makes the progress bar draggable
+         * Makes the progress bar draggable.
+         * IMPORTANT NOTE: Draggable elements cannot have a margin style.
          */
         makeDraggable() {
             // update draggable property in the object
@@ -380,6 +379,7 @@
 
             // Set the style of the loading bar so that it can be moved around on the page
             this.HTMLreference.classList.add('draggable')
+            this.HTMLreference.style.margin = ""
 
             // Add a listener for mouse clicks
             this.HTMLreference.addEventListener(
@@ -413,7 +413,6 @@
      * @property {string} fontSize - The size of the percentage font, for both outer and inner percentages
      * @property {string} fontColor - The color of the percentage font, for both outer and inner percentages
      * @property {boolean} draggable - Whether the progress bar is draggable
-     * @property {boolean} hidePercent - Whether the percentage displayed in the progress bar is hidden
      * @property {boolean} removeWhenDone - Whether to remove the progress bar when it reaches 100%
      * @property {number} opacity - A number between 0 and 1 for the opacity of the progress bar
      * @property {string[]} gradient - An array of colour values for a horizontal gradient
@@ -427,13 +426,14 @@
     class ClickerProgressBar extends ProgressBar {
         /**
          * Create a clicker progress bar
+         * In this progress bar, the clicks will be shown instead of percentage, so hidePercent is disabled.
          * @param {...ClickerProgress} options - {@link ClickerProgress} options to give to the clicker progress bar
          */
         constructor(options = {}) {
             super(options)
             this.clicks = 0
             this.clickRate = 0
-            this.hidePercent = options.hidePercent || true
+            this.hidePercent = false
             this.removeWhenDone = options.removeWhenDone || false
 
             this.HTMLreference.classList.add('clicker-bar')
@@ -524,10 +524,10 @@
             clickerButton.appendChild(
                 document.createTextNode(
                     name +
-                        ' - ' +
+                        '. ' +
                         'Cost: ' +
                         cost +
-                        ' clicks - ' +
+                        ' clicks. ' +
                         rate +
                         ' click/s'
                 )

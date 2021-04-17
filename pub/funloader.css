@@ -43,6 +43,7 @@
     cursor: move;
     user-select: none;
     position: absolute;
+    float: left;
 }
 
 

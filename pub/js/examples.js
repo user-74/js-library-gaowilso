@@ -1,52 +1,94 @@
 // function to load a random image into the HTML DOM
 const timer = (ms) => new Promise((res) => setTimeout(res, ms))
 
-function createRandomImage(progressBar, amount) {
-    const imageBox = document.querySelector('.image-box')
+async function example1() {
+    const box = document.getElementById('e1')
+    const p = new ProgressBar()
 
-    const image = document.createElement('img')
-    image.onload = function () {
-        progressBar.addProgress(amount)
-    }
-    image.src =
-        'https://picsum.photos/200/300/?random&t=' + new Date().getTime()
+    box.appendChild(p.HTMLreference)
 
-    imageBox.appendChild(image)
-}
-
-function toggleAll() {
-    const progressBars = getAllActiveProgressBars()
-    progressBars.forEach((bar) => bar.toggleHidePercent())
-}
-
-// function that generates images and needs a loading bar
-async function generateImages() {
-    // if (document.querySelector(".progress-bar")) return
-
-    const num = Number(document.querySelector('.textboxImages').value)
-    const draggable = document.querySelector('#enableDrag').checked
-    const percent = 100 / num
-
-    // if the number of images is invalid, stop
-    if (!Number.isInteger(num) || num <= 0) return
-
-    // get a loading bar an
-    const p = new ProgressBar({finishedMessage: "Complete!"})
-    const progressBar = p.HTMLreference
-    const placement = document.querySelector('.loading-box')
-    placement.appendChild(progressBar)
-
-    // makes the loading bar draggable
-    if (draggable) {
-        p.makeDraggable()
-
-    } else {
-        p.setProgressGradient(['#FFFFFF', '#FFFFFF'])
-    }
-
-    // generate images with a second delay between images, to randomize images
-    for (let i = 0; i < num; i++) {
-        createRandomImage(p, percent)
+    for (let i = 0; i < 10; i++) {
         await timer(1000)
+        p.addProgress(10)
+    }
+}
+
+async function example2() {
+    const box = document.getElementById('e2')
+    const p = new ProgressBar({draggable: true})
+    box.appendChild(p.HTMLreference)
+    for (let i = 0; i < 10; i++) {
+        await timer(1000)
+        p.addProgress(10)
+    }
+}
+
+async function example3() {
+    const box = document.getElementById('e3')
+    const p = new ProgressBar({height: 75, width: "100%", fontSize: 25})
+    box.appendChild(p.HTMLreference)
+    for (let i = 0; i < 10; i++) {
+        await timer(1000)
+        p.addProgress(10)
+    }
+}
+
+async function example4() {
+    const box = document.getElementById('e4')
+    const p = new ProgressBar({height: 50, fontColor: "#FFFFFF", image: {source: "images/pic.jpg", leftShift:200, upShift:45 }})
+    box.appendChild(p.HTMLreference)
+    for (let i = 0; i < 10; i++) {
+        await timer(1000)
+        p.addProgress(10)
+    }
+}
+
+async function example5() {
+    const box = document.getElementById('e5')
+    const p = new ClickerProgressBar()
+    box.appendChild(p.HTMLreference)
+        for (let i = 0; i < 10; i++) {
+        await timer(1000)
+        p.addProgress(10)
+    }
+}
+
+async function example6() {
+    const box = document.getElementById('e6')
+    const p = new ProgressBar({opacity: 0.5, gradient: ["#000000, #FFFFFF"]})
+    box.appendChild(p.HTMLreference)
+        for (let i = 0; i < 10; i++) {
+        await timer(1000)
+        p.addProgress(10)
+    }
+}
+
+async function example7() {
+    const box = document.getElementById('e7')
+    const p = new ProgressBar({overflow: true, removeWhenDone: false})
+    box.appendChild(p.HTMLreference)
+    while(1){
+        await timer(1000)
+        p.addProgress(10)
+    }
+}
+
+async function example8() {
+    const box = document.getElementById('e8')
+    const p = new ClickerProgressBar({draggable: true, clickPurchases: [{name: "God", cost: 3, rate: 300}, {name: "UofT", cost:300, rate: -300}]})
+    box.appendChild(p.HTMLreference)
+        for (let i = 0; i < 10; i++) {
+        await timer(1000)
+        p.addProgress(10)
+    }
+}
+
+async function example9() {
+    const box = document.getElementById('e9')
+    const p = new ProgressBar({finishedMessage: "Loading Complete!", removeWhenDone: false})
+    box.appendChild(p.HTMLreference)
+        for (let i = 0; i < 10; i++) {
+        await timer(1000)
+        p.addProgress(10)
     }
 }

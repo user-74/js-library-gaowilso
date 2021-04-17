@@ -2,42 +2,74 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>example usage of funloader.js</title>
-    <link rel="stylesheet" href="example.css" />
-    <link rel="stylesheet" href="funloader.css" />
-    <script
-      type="text/javascript"
-      type="module"
-      src="./js/funloader.js"
-    ></script>
-    <script
-      type="text/javascript"
-      type="module"
-      src="./js/examples.js"
-    ></script>
-  </head>
+    <head>
+        <meta charset="utf-8" />
+        <title>example usage of funloader.js</title>
+        <link rel="stylesheet" href="example.css" />
+        <link rel="stylesheet" href="funloader.css" />
+        <script
+            type="text/javascript"
+            type="module"
+            src="./js/funloader.js"
+        ></script>
+        <script
+            type="text/javascript"
+            type="module"
+            src="./js/examples.js"
+        ></script>
+    </head>
 
-  <body>
-    <h1>Random Image Generator using funloader.js</h1>
-
-    <div style="text-align: center">
-      Input number of images:
-      <input class="textboxImages" type="text" />
-      <input
-        class="loadingButton"
-        type="button"
-        value="Generate random images"
-        onclick="generateImages();"
-      />
-      <input id="enableDrag" type="checkbox" defaultchecked /> Make Loading Bar
-      Draggable
-      <input type="button" value="toggle all percentages" onclick="toggleAll();"/>
-    </div>
-
-    <div class="loading-box"></div>
-
-    <div class="image-box"></div>
-  </body>
+    <body>
+        <h1>Examples using FunLoader.js</h1>
+        <h2>Each example uses a loading bar that adds 10% every second</h2>
+        <strong> const p = new ProgressBar(options) </strong> 
+        <div class="examples-container">
+            <div id="e1" class="example">
+                <h2>Default Loading Bar</h2>
+                options = {} <br>
+                <button class="ebutton" onclick="example1()">Start Example</button>
+            </div>
+            <div id="e2" class="example">
+                <h2>Default Draggable Loading Bar</h2>
+                options = {draggable: true} <br>
+                <button class="ebutton" onclick="example2()">Start Example</button>
+            </div>
+            <div id="e3" class="example">
+                <h2>Custom Size Loading Bar</h2>
+                options = {height: 75, width: "100%", fontSize: 25} <br>
+                <button class="ebutton" onclick="example3()">Start Example</button>
+            </div>
+            <div id="e4" class="example">
+                <h2>Custom Background Image Loading Bar</h2>
+                options = {height: 50, <br> image: {source: "images/pic.jpg", leftShift:200, upShift:45 }}<br>
+                <button class="ebutton" onclick="example4()">Start Example</button>
+            </div>
+            <div id="e5" class="example">
+                <h2>Default Clicker Game Loading Bar</h2>
+                <strong> const p = new ClickerProgressBar(options) </strong> <br>
+                options = {} <br>
+                <button class="ebutton" onclick="example5()">Start Example</button>
+            </div>
+            <div id="e6" class="example">
+                <h2>Custom Color and Opacity Loading Bar</h2>
+                options = {opacity: 0.5, gradient: ["#000000, #FFFFFF"]} <br>
+                <button class="ebutton" onclick="example6()">Start Example</button>
+            </div>
+            <div id="e7" class="example">
+                <h2>Overflow Loading Bar</h2>
+                options = {overflow: true, removeWhenDone: false} <br>
+                <button class="ebutton" onclick="example7()">Start Example</button>
+            </div>
+            <div id="e8" class="example">
+                <h2>Custom Draggable Clicker Game Loading Bar</h2>
+                options = {draggable: true, <br> clickPurchases: [{name: "God", cost: 3, rate: 300}, {name: "UofT", cost:300, rate: -300}]} <br>
+                <button class="ebutton" onclick="example8()">Start Example</button>
+            </div>
+            <div id="e9" class="example">
+                <h2>Custom Finished Message Loading Bar</h2>
+                options = {finishedMessage: "Loading Complete!", <br> removeWhenDone: false} <br>
+                <button class="ebutton" onclick="example9()">Start Example</button>
+            </div>
+        </div>
+    </body>
 </html>
