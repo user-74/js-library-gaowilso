@@ -44,7 +44,7 @@
      * @property {(number|string)} width - The width of the progress bar in pixels or some css amount
      * @property {string} fontSize - The size of the percentage font, for both outer and inner percentages
      * @property {string} fontColor - The color of the percentage font, for both outer and inner percentages
-     * @property {boolean} draggable - Whether the progress bar is draggable
+     * @property {boolean} draggable - Whether the progress bar is draggable. Note: draggable progress bars cannot have a margin style.
      * @property {boolean} hidePercent - Whether the percentage displayed in the progress bar is hidden
      * @property {boolean} removeWhenDone - Whether to remove the progress bar when it reaches 100%
      * @property {number} opacity - A number between 0 and 1 for the opacity of the progress bar
@@ -371,7 +371,7 @@
 
         /**
          * Makes the progress bar draggable.
-         * IMPORTANT NOTE: Draggable elements cannot have a margin style.
+         * IMPORTANT NOTE: A draggable ProgressBar cannot have a margin style.
          */
         makeDraggable() {
             // update draggable property in the object

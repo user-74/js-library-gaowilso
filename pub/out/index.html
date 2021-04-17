@@ -56,6 +56,29 @@
                     API Documentation
                 </a>
                 
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/csc309-winter-2021/js-library-gaowilso"
+                        >
+                            GitHub
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/examples"
+                        >
+                            Examples
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/"
+                        >
+                            Home Page
+                        </a>
+                    
                 
                 
             </div>
@@ -110,6 +133,8 @@
     <section>
         <article><h1>FunLoader.js</h1>
 <h2>Description</h2>
+<p>FunLoaderJs provides developers with a highly customizable progress bar that can be used in a variety of scenarios,
+from loading images to displaying user progress in a task!</p>
 <p><a href="https://funloader.herokuapp.com/">Landing Page</a></p>
 <p><a href="https://github.com/csc309-winter-2021/js-library-gaowilso">Github Repository</a></p>
 <p><a href="https://funloader.herokuapp.com/documentation">Documentation</a></p>
@@ -120,12 +145,12 @@
 </ul>
 <h3>Getting Started</h3>
 <p>To get set up with the library, include the funloader.js script and funloader.css files in your webpage.</p>
-<pre class="prettyprint source lang-html"><code>&lt;!-- Example loading the stylesheet and script -->
+<pre class="prettyprint source lang-html"><code>&lt;!-- Example loading the stylesheet and script. Place in the &lt;head> tag of your HTML -->
 &lt;link rel=&quot;stylesheet&quot; href=&quot;funloader.css&quot; />
-&lt;script type=&quot;text/javascript&quot; type=&quot;module&quot; src=&quot;js/funloader.js&quot;>&lt;/script>
+&lt;script type=&quot;text/javascript&quot; type=&quot;module&quot; src=&quot;funloader.js&quot;>&lt;/script>
 </code></pre>
 <p>There are no external modules required to use this library.</p>
-<p>Example code snippet for basic functionality</p>
+<p>Example code snippet for basic functionality.</p>
 <pre class="prettyprint source lang-javascript"><code>// Create the loading bar
 const pbar = new ProgressBar()
 const progressBar = pbar.HTMLreference
@@ -133,7 +158,7 @@ const progressBar = pbar.HTMLreference
 // Adding the loading bar to the HTML DOM
 document.querySelector('.progress-box').appendChild(progressBar)
 
-// Adding progress to the loading bar.
+// Adding 15% progress to the loading bar.
 pbar.addProgress(15)
 
 // Editing the look of the loading bar.
