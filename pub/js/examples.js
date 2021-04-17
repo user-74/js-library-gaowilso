@@ -43,6 +43,7 @@ function example4() {
 function example5() {
     const box = document.getElementById('e5')
     const p = new ClickerProgressBar()
+    box.appendChild(p.HTMLreference)
     progressAdd(p)
 }
 
