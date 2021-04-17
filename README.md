@@ -5,6 +5,10 @@
 FunLoaderJs provides developers with a highly customizable progress bar that can be used in a variety of scenarios,
 from loading images to displaying user progress in a task!
 
+There are a multitude of user interactivity features, designed to keep your users engaged and stuck on your website as you load your content in the background, such as a built in customizable clicker game!
+
+Customize it to your liking to fit the theme of your website.
+
 [Landing Page](https://funloader.herokuapp.com/)
 
 [Github Repository](https://github.com/csc309-winter-2021/js-library-gaowilso)
