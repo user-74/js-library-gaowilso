@@ -9,7 +9,7 @@ from loading images to displaying user progress in a task!
 
 [Github Repository](https://github.com/csc309-winter-2021/js-library-gaowilso)
 
-[Documentation](https://funloader.herokuapp.com/documentation)
+[Documentation](https://funloader.herokuapp.com/out/documentation)
 
 The documentation page was created using:
 

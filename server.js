@@ -21,7 +21,7 @@ app.get('/examples', (req, res) => {
     res.sendFile(path.join(__dirname, '/pub/examples.html'))
 })
 
-app.get('/documentation', (req, res) => {
+app.get('/out/documentation', (req, res) => {
     res.sendFile(path.join(__dirname, '/pub/out/index.html'))
 })
 
