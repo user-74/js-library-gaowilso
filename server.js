@@ -8,29 +8,21 @@ const app = express()
 
 const path = require('path')
 
-// Setting up a static directory for the files in /pub
-// using Express middleware.
-// Don't put anything in /pub that you don't want the public to have access to!
 app.use(express.static(path.join(__dirname, '/pub')))
+app.use("/styles", express.static(__dirname + '/pub/out/styles'));
+app.use("/fonts", express.static(__dirname + '/pub/out/fonts'));
+app.use("/scripts", express.static(__dirname + '/pub/out/scripts'));
 
-// Let's make some express 'routes'
-// Express has something called a Router, which
-// takes specific HTTP requests and handles them
-// based on the HTTP method and URL
+app.get('/', (req, res) =>{
+    res.sendFile(path.join(__dirname, '/pub/landingpage.html'))
+})
 
-// Let's make a route for an HTTP GET request to the
-// 'root' of our app (i.e. top level domain '/')
-
-app.get('/', (req, res) => {
-    // sending a string
-    //res.send('This should be the root route!')
-
-    //sending some HTML
+app.get('/examples', (req, res) => {
     res.sendFile(path.join(__dirname, '/pub/examples.html'))
 })
 
 app.get('/documentation', (req, res) => {
-    res.sendFile(path.join(__dirname, '/out/index.html'))
+    res.sendFile(path.join(__dirname, '/pub/out/index.html'))
 })
 
 // will use an 'environmental variable', process.env.PORT, for deployment.

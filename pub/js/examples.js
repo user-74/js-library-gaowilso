@@ -31,7 +31,7 @@ async function generateImages() {
     if (!Number.isInteger(num) || num <= 0) return
 
     // get a loading bar an
-    const p = new ProgressBar({image: {source: 'images/pic.jpg', leftShift: 500}, width:500, height:250})
+    const p = new ProgressBar({finishedMessage: "Complete!"})
     const progressBar = p.HTMLreference
     const placement = document.querySelector('.loading-box')
     placement.appendChild(progressBar)
