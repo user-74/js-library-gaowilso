@@ -2,7 +2,7 @@
 
 ## Description
 
-FunLoaderJs provides developers with a highly customizable progress bar that can be used in a variety of scenarios, 
+FunLoaderJs provides developers with a highly customizable progress bar that can be used in a variety of scenarios,
 from loading images to displaying user progress in a task!
 
 [Landing Page](https://funloader.herokuapp.com/)
