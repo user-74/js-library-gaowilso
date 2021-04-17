@@ -50,7 +50,7 @@
      * @property {number} opacity - A number between 0 and 1 for the opacity of the progress bar
      * @property {string[]} gradient - An array of colour values for a horizontal gradient
      * @property {boolean} overflow - Whether the progress bar can be filled beyond 100%
-     * @property {Image} image - An object containing an image to use as the background image for the progress bar
+     * @property {Image} image - An object containing an {@link Image} to use as the background image for the progress bar
      * @property {string} finishedMessage - A message to display when the progress bar has finished loading
      */
 
@@ -419,7 +419,8 @@
      * @property {string[]} gradient - An array of colour values for a horizontal gradient
      * @property {boolean} overflow - Whether the progress bar can be filled beyond 100%
      * @property {Image} image - An object containing an image to use as the background image for the progress bar
-     * @property {ClickerPurchase[]} clickPurchases - ClickerProgressBar specific
+     * @property {string} finishedMessage - A message to display when the progress bar has finished loading
+     * @property {ClickerPurchase[]} clickPurchases - ClickerProgressBar specific: an array of objects of {@link ClickerPurchase} items
      */
 
     /** Class representing a progress bar with the clicker game built in */
