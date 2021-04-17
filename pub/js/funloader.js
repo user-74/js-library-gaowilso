@@ -10,7 +10,7 @@ const activeProgressBars = []
 // Basic Loading Bar Functionality:
 /**
  * Get all active loading bars
- * @returns An array containing all active progress bars
+ * @returns {ProgressBar[]} An array containing all active progress bars
  */
 function getAllActiveProgressBars() {
     return activeProgressBars
@@ -38,8 +38,16 @@ function progressBarHTML() {
     return progressBar
 }
 /**
- * Options for the progress bar.
- * @typedef {Object} Progress~Options
+ * Image object for setting the background image of the progress bar
+ * @typedef {Object} Image
+ * @property {string} source - Source of the image
+ * @property {number} leftShift - Number of pixels to shift the image left
+ * @property {number} upShift - Number of pixels to shift the image up
+ */
+
+/**
+ * Optional parameters to set various options for the progress bar.
+ * @typedef {Object} Progress
  * @property {(number|string)} height - The height of the progress bar in pixels or some css amount
  * @property {(number|string)} width - The width of the progress bar in pixels or some css amount
  * @property {string} fontSize - The size of the percentage font, for both outer and inner percentages.
@@ -50,14 +58,14 @@ function progressBarHTML() {
  * @property {number} opacity - A number between 0 and 1 for the opacity of the progress bar
  * @property {string[]} gradient - An array of colour values for a horizontal gradient.
  * @property {boolean} overflow - Whether the progress bar can be filled beyond 100%
- * @property {Object} image - An object containing an image to use as the background image for the progress bar
+ * @property {Image} image - An object containing an image to use as the background image for the progress bar
  */
 
-/** Class representing a progress bar */
+/** Class representing a regular progress bar */
 class ProgressBar {
     /**
      * Create a progress bar
-     * @param {...Progress~Options} options - The options for the progress bar
+     * @param {...Progress} options - The options for the progress bar {@link Progress}
      */
     constructor(options = {}) {
         this.percentage = 0
@@ -79,10 +87,11 @@ class ProgressBar {
         this.HTMLouterPercentage = this.HTMLreference.getElementsByClassName(
             'outerPercentage'
         )[0]
-
         if (options.image) {
             this.image = {
                 source: options.image.source,
+                leftShift: options.image.leftShift || 0,
+                upShift: options.image.upShift || 0,
             }
         }
 
@@ -93,7 +102,7 @@ class ProgressBar {
     }
 
     /**
-     * Style the progress bar according to the options specified
+     * Style the progress bar according to this progress bar's attributes
      */
     style() {
         this.setHeight(this.height)
@@ -102,6 +111,7 @@ class ProgressBar {
         if (this.fontColor) this.setFontColor(this.fontColor)
         this.setOpacity(this.opacity)
         this.setProgressGradient(this.gradient)
+        if (this.image) this.setBackgroundImage(this.image)
     }
 
     /**
@@ -121,7 +131,7 @@ class ProgressBar {
         this._updateInnerText()
 
         if (percent === 100 && this.removeWhenDone) {
-            this.finishBar()
+            this.finishAnimation()
         }
     }
 
@@ -142,7 +152,7 @@ class ProgressBar {
         this._updateInnerText()
 
         if (percent === 100 && this.removeWhenDone) {
-            this.finishBar()
+            this.finishAnimation()
         }
     }
 
@@ -166,7 +176,10 @@ class ProgressBar {
         }
     }
 
-    async finishBar() {
+    /**
+     * Fill the bar to 100%, fades it out, and removes it from the DOM and active progress bars
+     */
+    async finishAnimation() {
         // complete the bar
         if (!this.hidePercent) {
             this.HTMLprogress.innerText = '100%'
@@ -180,11 +193,18 @@ class ProgressBar {
         setTimeout(() => this.cancelBar(), 2000)
     }
 
+    /**
+     * Immediately remove the progress bar
+     */
     cancelBar() {
         delete activeProgressBars.splice(activeProgressBars.indexOf(this), 1)
         this.HTMLreference.remove()
     }
 
+    /**
+     * Set the height of the progress bar
+     * @param {(number|string)} height
+     */
     setHeight(height) {
         if (typeof height === 'number') {
             this.height = height
@@ -197,6 +217,10 @@ class ProgressBar {
         }
     }
 
+    /**
+     * Set the opacity of the progress bar
+     * @param {number} opacity
+     */
     setOpacity(opacity) {
         if (typeof opacity === 'number') {
             this.opacity = opacity
@@ -206,6 +230,10 @@ class ProgressBar {
         }
     }
 
+    /**
+     * Set the width of the progress bar
+     * @param {(number|string)} width
+     */
     setWidth(width) {
         if (typeof width === 'number') {
             this.width = width
@@ -218,6 +246,10 @@ class ProgressBar {
         }
     }
 
+    /**
+     * Set the font size of the percentage text
+     * @param {(number|string)} fontSize
+     */
     setFontSize(fontSize) {
         if (typeof fontSize === 'string') {
             this.fontSize = fontSize
@@ -232,18 +264,25 @@ class ProgressBar {
         }
     }
 
+    /**
+     * Set the color of the percentage text
+     * @param {string} fontColor
+     */
     setFontColor(fontColor) {
-        if (typeof fontSize === 'string') {
-            this.HTMLprogress.style.fontSize = fontSize
-            this.HTMLouterPercentage.style.fontSize = fontSize
-        } else if (typeof fontSize === 'number') {
-            this.HTMLprogress.style.fontSize = fontSize + 'px'
-            this.HTMLouterPercentage.style.fontSize = fontSize + 'px'
+        if (typeof fontColor === 'string') {
+            this.fontColor = fontColor
+            this.HTMLprogress.style.fontColor = fontColor
+            this.HTMLouterPercentage.style.fontColor = fontColor
         } else {
-            throw new Error('Invalid fontSize supplied to progress bar')
+            throw new Error('Invalid fontColor supplied to progress bar')
         }
     }
 
+    /**
+     * Change the gradient of the progress bar
+     * A solid color progress bar is possible if the colors provided are the same.
+     * @param {string[]} colors - Array of two or more strings that represent colors
+     */
     setProgressGradient(colors) {
         this.gradient = colors
         console.log(this.gradient)
@@ -251,46 +290,220 @@ class ProgressBar {
         this.HTMLprogress.style.background =
             'linear-gradient(to right, ' + colors.join(', ') + ' )'
         this.HTMLprogress.style.boxShadow =
-            '0px 2px 2px -5px ' + colors[0] + ', 0px 2px 5px ' + colors[colors.length - 1]
+            '0px 2px 2px -5px ' +
+            colors[0] +
+            ', 0px 2px 5px ' +
+            colors[colors.length - 1]
     }
 
-    // do not show percentage inside progress bar
+    /**
+     * Set the background image to the one set the the color
+     */
+    setBackgroundImage(image) {
+        if (image) {
+            this.image.source = image.source || this.image.source
+            this.image.leftShift = image.leftShift || this.image.leftShift
+            this.image.upShift = image.upShift || this.image.upShift
+        }
+
+        if (this.image.source) {
+            this.HTMLreference.style.backgroundImage =
+                'url(' + this.image.source + ')'
+            this.HTMLreference.style.backgroundPosition =
+                '-' +
+                String(this.image.leftShift) +
+                'px -' +
+                String(this.image.upShift) +
+                'px'
+        }
+    }
+
+    /**
+     * Hide progress percentage
+     */
     hidePercent() {
         this.hidePercent = true
         this._updateInnerText()
     }
 
-    // show percentage inside progress bar
+    /**
+     * Display progress percentage
+     */
     unhidePercent() {
         this.hidePercent = false
         this._updateInnerText()
     }
 
-    // toggle percentage showing
+    /**
+     * Toggle hide/display progress percentage
+     */
     toggleHidePercent() {
         this.hidePercent = !this.hidePercent
         this._updateInnerText()
     }
 
+    /**
+     * Set the bar to stay when loading is complete
+     */
     keepWhenDone() {
         this.removeWhenDone = false
     }
 
+    unkeepWhenDone() {
+        this.removeWhenDone = true
+
+        // check if the progress bar is finished
+        let percent = Math.round(this.percentage * 100) / 100
+        if (percent >= 100 && this.removeWhenDone) {
+            this.finishAnimation()
+        }
+    }
+
     // Interactivity:
 
+    /**
+     * Makes the progress bar draggable
+     */
     makeDraggable() {
         // update draggable property in the object
         this.draggable = true
 
         // Set the style of the loading bar so that it can be moved around on the page
-        this.HTMLreference.style.cursor = 'move'
-        this.HTMLreference.style.userSelect = 'none'
-        this.HTMLreference.style.position = 'absolute'
+        this.HTMLreference.classList.add('draggable')
 
         // Add a listener for mouse clicks
         this.HTMLreference.addEventListener('mousedown', mouseDownDragHandler)
     }
 }
+
+/** Class representing a progress bar with the clicker game built in */
+class ClickerProgressBar extends ProgressBar {
+    /**
+     * Create a clicker progress bar
+     * @param {...Progress} options -
+     */
+    constructor(options = {}) {
+        super(options)
+        this.clicks = 0
+        this.clickRate = 0
+        this.hidePercent = options.hidePercent || true
+        this.removeWhenDone = options.removeWhenDone || false
+        this._updateInnerText()
+
+        this.HTMLreference.classList.add('clicker-bar')
+        this.HTMLreference.onclick = () => {
+            this.incrementClicks(1)
+        }
+
+        // default purchases in the clicker game
+        const defaultPurchases = [
+            { name: 'Machine', cost: 10, rate: 1 },
+            { name: 'Factory', cost: 25, rate: 3 },
+            { name: 'Planet', cost: 500, rate: 50 },
+        ]
+        // purchases defined through arguments passed in
+        let purchases = options.clickPurchases || defaultPurchases
+        this.clickPurchases = purchases.map((i) =>
+            this.newClickerPurchase(i.name, i.cost, i.rate)
+        )
+        this.checkPurchases()
+
+        // interval to add clicks based on click rate
+        this.interval = setInterval(() => {
+            this.incrementClicks(this.clickRate)
+        }, 1000)
+    }
+
+    /**
+     * Increment the number of clicks by the specified amount
+     * @param {number} amount
+     */
+    incrementClicks(amount) {
+        this.clicks += amount
+        this._updateInnerText()
+        this.checkPurchases()
+    }
+
+    buy(cost, rate) {
+        if (this.clicks >= cost) {
+            this.clicks -= cost
+            this.clickRate += rate
+            this._updateInnerText()
+            this.checkPurchases()
+        }
+    }
+
+    checkPurchases() {
+        this.clickPurchases.forEach((item) => {
+            if (this.clicks >= item.cost) {
+                item.HTMLreference.disabled = false
+            } else {
+                item.HTMLreference.disabled = true
+            }
+        })
+    }
+
+    /**
+     * Ends the game and removes the progress bar
+     */
+    finishGame() {
+        clearInterval(this.interval)
+        this.unkeepWhenDone()
+    }
+
+    newClickerPurchase(name, cost, rate) {
+        if (
+            typeof name !== 'string' ||
+            typeof cost !== 'number' ||
+            typeof rate !== 'number'
+        ) {
+            throw new Error('New purchase item for clicker bar invalid')
+        }
+
+        const clickerButton = document.createElement('button')
+        clickerButton.appendChild(
+            document.createTextNode(
+                name +
+                    ' - ' +
+                    'Cost: ' +
+                    String(cost) +
+                    ' clicks - ' +
+                    String(rate) +
+                    ' click/s'
+            )
+        )
+
+        clickerButton.onclick = () => {
+            this.buy(cost, rate)
+        }
+        this.HTMLreference.appendChild(clickerButton)
+
+        return { HTMLreference: clickerButton, rate: rate, cost: cost }
+    }
+
+    /**
+     * Helper function that updates the number of clicks and clicks per second
+     */
+    _updateInnerText() {
+        let active, deactive
+        if (this.percentage > 50) {
+            active = this.HTMLprogress
+            deactive = this.HTMLouterPercentage
+        } else {
+            deactive = this.HTMLprogress
+            active = this.HTMLouterPercentage
+        }
+        active.innerText =
+            'Clicks: ' +
+            String(this.clicks) +
+            ' (+' +
+            String(this.clickRate) +
+            'c/s)'
+        deactive.innerText = ''
+    }
+}
+
+class ReflexProgressBar extends ProgressBar {}
 
 // The current position of mouse and the selected progress bar
 let mouseX = 0
@@ -307,7 +520,8 @@ function mouseDownDragHandler(e) {
     active = e.target
 
     // in case the user clicks on the progress bar and not the container
-    if (active.className !== 'progress-bar') active = active.parentElement
+    if (!active.className.includes('progress-bar'))
+        active = active.parentElement
 
     // mouse listeners
     document.addEventListener('mousemove', mouseMoveDragHandler)

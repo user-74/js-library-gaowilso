@@ -31,7 +31,7 @@ async function generateImages() {
     if (!Number.isInteger(num) || num <= 0) return
 
     // get a loading bar an
-    const p = new ProgressBar({opacity: 1, gradient:['red', 'green', 'blue']})
+    const p = new ProgressBar({image: {source: 'images/pic.jpg', leftShift: 500}, width:500, height:250})
     const progressBar = p.HTMLreference
     const placement = document.querySelector('.loading-box')
     placement.appendChild(progressBar)
@@ -41,9 +41,6 @@ async function generateImages() {
         p.makeDraggable()
 
     } else {
-        progressBar.style.margin = 'auto'
-        progressBar.style.marginTop = '10px'
-        p.setFontSize('40px')
         p.setProgressGradient(['#FFFFFF', '#FFFFFF'])
     }
 
