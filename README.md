@@ -1,4 +1,4 @@
-# FunLoader.js
+# fun-loader.js
 
 ## Description
 
